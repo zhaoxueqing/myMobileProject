@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Title</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        #box{width: 16rem;overflow: hidden;}
+        #box ul{width: 64rem;overflow: hidden;}
+        #box ul li{width: 16rem;float: left;height: 5rem;}
+    </style>
+    <script>
+        ;(function(){
+            function change(){
+                document.documentElement.style.fontSize=20*document.documentElement.clientWidth/320+'px';
+            }
+            change();
+            window.addEventListener('resize',change,false);
+        })();
+        document.addEventListener('DOMContentLoaded',function(){
+            var oUl=document.querySelector('#box ul');
+            var aLi=oUl.children;
+            var x=0;
+            var iNow=0;
+            oUl.addEventListener('touchstart',function(ev){
+                var downX=ev.targetTouches[0].pageX;
+                var disX=downX-x;
+                oUl.style.transition='none';
+                function fnMove(ev){
+                    x=ev.targetTouches[0].pageX-disX;
+                    oUl.style.WebkitTransform='translate('+x+'px)';
+                }
+                function fnEnd(ev){
+                    document.removeEventListener('touchmove',fnMove,false);
+                    document.removeEventListener('touchend',fnEnd,false);
+                    var upX=ev.changedTouches[0].pageX;
+                    if(Math.abs(upX-downX)>50){
+                        if(downX>upX){
+                            iNow++;
+                            if(iNow>=aLi.length){
+                                iNow=aLi.length-1;
+                            }
+                        }else {
+                            iNow--;
+                            if(iNow<0){
+                                iNow=0;
+                            }
+                        }
+                    }
+                    x=-iNow*aLi[0].offsetWidth;
+                    oUl.style.WebkitTransform='translate('+x+'px)';
+                    oUl.style.transition='.4s all ease';
+                }
+                document.addEventListener('touchmove',fnMove,false);
+                document.addEventListener('touchend',fnEnd,false);
+                ev.preventDefault();
+            },false);
+        },false);
+    </script>
+</head>
+<body>
+<div id="box">
+    <ul>
+        <li style="background: red;">111111</li>
+        <li style="background: yellow;">222222</li>
+        <li style="background: green;">333333</li>
+        <li style="background: blue;">444444</li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="view-port" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Title</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        #box{
+            display: -webkit-box;
+        }
+        #box div{height: 200px;}
+        #box div:nth-child(1),#box div:nth-child(3){
+            background: red;
+            /*width: 200px;*/
+            -webkit-box-flex: 3;
+        }
+        #box div:nth-child(2){
+            background: yellow;
+            /*min-width: 200px;*/
+            -webkit-box-flex: 2;
+        }
+    </style>
+    <script>
+
+    </script>
+
+</head>
+<body>
+<div id="box">
+    <div>aaa</div>
+    <div>bbb</div>
+    <div>ccc</div>
+</div>
+
+</body>
+</html>

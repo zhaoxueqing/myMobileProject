@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Title</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        .box1,.box2{width: 100px;height: 100px;background: red;position: absolute;top: 0;}
+        .box1{left: 0;}
+        .box2{right: 0;}
+    </style>
+    <script>
+        function drag(obj){
+            var x=0;
+            var y=0;
+            obj.addEventListener('touchstart',function(ev){
+                var disX=ev.targetTouches[0].pageX-x;
+                var disY=ev.targetTouches[0].pageY-y;
+                var id=ev.targetTouches[0].identifier;
+                function fnMove(ev){
+                    if(ev.targetTouches[0].identifier==id){
+                        x=ev.targetTouches[0].pageX-disX;
+                        y=ev.targetTouches[0].pageY-disY;
+                        obj.style.webkitTransform='translate('+x+'px,'+y+'px)';
+                    }
+                }
+                function fnEnd(ev){
+                    if(ev.changedTouches[0].identifier==id){
+                        obj.removeEventListener('touchmove',fnMove,false);
+                        obj.removeEventListener('touchend',fnEnd,false);
+                    }
+                }
+                obj.addEventListener('touchmove',fnMove,false);
+                obj.addEventListener('touchend',fnEnd,false);
+                ev.preventDefault();
+            },false);
+        }
+
+        document.addEventListener('DOMContentLoaded',function(){
+            var aBox=document.querySelectorAll('div');
+            for(var i=0;i<aBox.length;i++){
+                drag(aBox[i]);
+            }
+        },false);
+    </script>
+</head>
+<body>
+<div class="box1"></div>
+<div class="box2"></div>
+</body>
+</html>

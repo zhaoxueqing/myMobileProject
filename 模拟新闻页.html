@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Title</title>
+    <style>
+        *{margin: 0;padding: 0;list-style: none;}
+        html{font-size: 20px;}
+        #box{width: 100%;overflow: hidden;}
+        #box header,#box footer{
+            width: 16rem;
+            text-align: center;
+            background: green;
+            height: 3rem;
+            line-height: 3rem;
+        }
+        #box footer{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+        #loading{
+            font-size: 0.6rem;
+            text-align: center;
+            overflow: hidden;
+            height: 0;
+        }
+        #news{
+            text-align: center;
+            width: 400%;
+            overflow: hidden;
+        }
+        #news dl{
+            width: 25%;
+            float: left;
+        }
+        #news dt{
+            height: 2rem;
+            line-height: 2rem;
+            background: #cccccc;
+        }
+        #news dd{
+            height: 1.5rem;
+            line-height: 1.5rem;
+            border-bottom: 1px dashed #000000;
+            text-align: left;
+            padding-left: 1rem;
+        }
+    </style>
+    <script>
+        ;(function(){
+            function change(){
+                document.documentElement.style.fontSize=20*document.documentElement.clientWidth/320+'px';
+            }
+            change();
+            window.addEventListener('resize',change,false);
+        })();
+        document.addEventListener('DOMContentLoaded',function(){
+            var oNews=document.querySelector('#news');
+            var oLoading=document.querySelector('#loading');
+            var aDl=oNews.children;
+            var x=0;
+            var y=0;
+            var iNow=0;
+            var dir='';
+            oNews.addEventListener('touchstart',function(ev){
+                var downX=ev.targetTouches[0].pageX;
+                var downY=ev.targetTouches[0].pageY;
+                var disX=downX-x;
+                var disY=downY-y;
+                oNews.style.transition='none';
+                function fnMove(ev){
+                    if(dir){
+                        if(dir=='lr'){
+                            x=ev.targetTouches[0].pageX-disX;
+                            oNews.style.transform='translate3d('+x+'px ,0, 0)';
+                        }else if(dir=='bottom'){
+                            y=ev.targetTouches[0].pageY-disY;
+                            (y>80)&&(y=80);
+                            oLoading.style.height=y+'px';
+                        }
+                    }else {
+                        if(Math.abs(ev.targetTouches[0].pageX-downX)>20){
+                            dir='lr';
+                        }else if(Math.abs(ev.targetTouches[0].pageY-downY)>20){
+                            dir='bottom';
+                        }
+                    }
+                }
+                function fnEnd(ev){
+                    document.removeEventListener('touchmove',fnMove,false);
+                    document.removeEventListener('touchend',fnEnd,false);
+                    if(dir=='lr'){
+                        var upX=ev.changedTouches[0].pageX;
+                        if(Math.abs(upX-downX)>50){
+                            if(downX>upX){
+                                iNow++;
+                                if(iNow>=aDl.length)iNow=aDl.length-1;
+                            }else {
+                                iNow--;
+                                if(iNow<0)iNow=0;
+                            }
+                        }
+                        x=-iNow*aDl[0].offsetWidth;
+                        oNews.style.transition='.4s all ease';
+                        oNews.style.transform='translate3d('+x+'px,0,0)';
+                    }else if(dir=='bottom') {
+                        oLoading.style.transition = '.4s all ease';
+                        oLoading.style.height = 0;
+                    }
+                    dir = '';
+                }
+                document.addEventListener('touchmove',fnMove,false);
+                document.addEventListener('touchend',fnEnd,false);
+            },false);
+        },false);
+    </script>
+</head>
+<body>
+<div id="box">
+    <header>新闻头部</header>
+    <section>
+        <div id="loading">
+            <img src="roller.gif">
+            <span>加载新闻</span>
+        </div>
+        <div id="news">
+            <dl>
+                <dt>推荐新闻</dt>
+                <dd>还是说说好好</dd>
+                <dd>恩恩</dd>
+                <dd>还的东东</dd>
+                <dd>好好</dd>
+                <dd>还原因是说好</dd>
+                <dd>对对对</dd>
+                <dd>热热热</dd>
+                <dd>彻彻底底</dd>
+                <dd>反反复复</dd>
+            </dl>
+            <dl>
+                <dt>娱乐新闻</dt>
+                <dd>西搜搜觉得的顶顶顶顶顶而贷款</dd>
+                <dd>sss事实上事实上事实上</dd>
+                <dd>呜呜呜呜呜呜</dd>
+                <dd>呃呃呃</dd>
+                <dd>的点点滴滴的点点滴滴到</dd>
+                <dd>呃呃呃鹅鹅鹅鹅鹅鹅饿</dd>
+                <dd>鹅鹅鹅鹅鹅鹅饿</dd>
+                <dd>我查查</dd>
+                <dd>地地道道的对对对</dd>
+                <dd>此处</dd>
+            </dl>
+            <dl>
+                <dt>军事新闻</dt>
+                <dd>和购房计划和</dd>
+                <dd>哦哦看看</dd>
+                <dd>哼哼唧唧</dd>
+                <dd>自噢噢噢噢看</dd>
+                <dd>uuuuuhh发发发</dd>
+                <dd>快快快</dd>
+            </dl>
+        </div>
+    </section>
+    <footer>新闻底部</footer>
+</div>
+</body>
+</html>
